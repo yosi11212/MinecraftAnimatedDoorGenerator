@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+//  
 <html>
 <head>
 	<title>minecraft command generator</title>
@@ -26,7 +27,7 @@
             <option value="iron">iron</option>
         </select>
 
-        <label for="doorNum">Door number:</label>
+        <label for="doorNum">Door name:</label>
         <input type="text" id="doorNum">
         <h3>hello!</h3>
         <h3>use the doorSize to choose how many blocks tall the door is.</h3>
@@ -65,17 +66,57 @@
 	</script>
 
 
-
 <dir>to set up door rotation watching (one time)</dir>
 <dir>/scoreboard objectives add Doors dummy "Doors"</dir>
+
+<h3>command block to move door until wanter direction spawn egg generator:</h3>
+<form>
+<label for="Direction">Direction:</label>
+<select id="Direction" name="Direction">
+    <option value="-90">north</option>
+    <option value="0">east</option>
+    <option value="90">south</option>
+    <option value="-180">west</option>
+</select>
+
+<label for="incriment">Rotating incriment: (i reccomend using 1/2/5)</label>
+<input type="number" name="incriment" id="incriment">
+
+<label for="doorNum1">Door name</label>
+<input type="text" name="doorNum1" id="doorNum1">
+
+<button type="button" onclick="spawnEgg()">Generate command</button>
+
+</form>
+<textarea id="egg" readonly></textarea>
+<script>
+    
+    function spawnEgg() {
+        var direction = document.getElementById("Direction").value;
+        var step = document.getElementById("incriment").value;
+        var num = document.getElementById("doorNum1").value;
+
+        document.getElementById("egg").value = "hello";
+        document.getElementById("egg").value = "/summon falling_block ~ ~1 ~ {BlockState:{Name:\"minecraft:repeating_command_block\",Properties:{facing:\"up\"}},TileEntityData:{Command:\"";
+        document.getElementById("egg").value = document.getElementById("egg").value + "/execute unless score door"+num+" Doors matches "+direction+" run execute positioned as @e[type=armor_stand,tag=door"+num+",limit=1] rotated as @e[type=armor_stand,tag=door"+num+",limit=1] run tp @e[type=armor_stand,tag=door"+num+",limit=1] ~ ~ ~ ~"+step+" 0.0\"";
+        document.getElementById("egg").value = document.getElementById("egg").value + "},Time:1,Motion:[0.0,2.0,0.0],Passengers:[{id:\"minecraft:falling_block\",BlockState:{Name:\"minecraft:chain_command_block\",Properties:{facing:\"up\",conditional:\"true\",}},TileEntityData:{Command:\"";
+        document.getElementById("egg").value = document.getElementById("egg").value + "/execute rotated as @e[tag=door"+num+",type=armor_stand,limit=1] run tp @e[tag=door"+num+",type=!minecraft:armor_stand] ~ ~ ~ facing ^-1 ^ ^\",auto:1b";
+        document.getElementById("egg").value = document.getElementById("egg").value + "},Time:2}]}";
+
+
+
+}
+
+
+</script>
+
+
+
 
 <dir>to update door rotation (repeating command block)</dir>
 <dir>/execute store result score door2 Doors run data get entity @e[type=minecraft:armor_stand,tag=door2,limit=1] Rotation[0] 1</dir>
 
-<dir>to move door until wanted rotation (chain command block after repeating)</dir>
-<dir>/execute unless score door2 Doors matches <b>wanted rotation</b> run execute positioned as @e[type=armor_stand,tag=door2,limit=1] rotated as @e[type=armor_stand,tag=door2,limit=1] run tp @e[type=armor_stand,tag=door2,limit=1] ~ ~ ~ ~<b>step</b> 0.0</dir>
 <img src="Directions.png" alt="ingame directions to number values" width="700" height="500">
 
 </body>
 </html>
-    
