@@ -1,1 +1,68 @@
-<h1>Hello!</h1>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>minecraft command generator</title>
+</head>
+<body>
+	<form>
+        <h1>summon door</h1>
+
+        <label for="doorSize">Door size:</label>
+        <input type="number" id="doorSize" >
+
+        <label for="woodType">Wood type:</label>
+        <select id="woodType" name="woodType">
+            <option value="oak">oak</option>
+            <option value="spruce">spruce</option>
+            <option value="birch">birch</option>
+            <option value="jungle">jungle</option>
+            <option value="acacia">acacia</option>
+            <option value="dark_oak">dark oak</option>
+            <option value="mangrove">mangrove</option>
+            <option value="cherry">cherry</option>
+            <option value="bamboo">bamboo</option>
+            <option value="crimson">crimson</option>
+            <option value="warped">warped</option>
+            <option value="iron">iron</option>
+        </select>
+
+        <label for="doorNum">Door number:</label>
+        <input type="text" id="doorNum">
+        <h3>hello!</h3>
+        <h3>use the doorSize to choose how many blocks tall the door is.</h3>
+        <h3>change the woodtype to change the kind of trapdoor.</h3>
+        <h3>change woodname to change the tags the door has (used to kill/move it)</h3>
+
+        
+        <button type="button" onclick="generate()">werk it & copy to clipboard</button>
+
+	</form>
+    <textarea id="command" readonly></textarea>
+
+	<script>
+
+        function generate() {
+
+            var size = document.getElementById("doorSize").value;
+            var type = document.getElementById("woodType").value;
+            var num = document.getElementById("doorNum").value;
+
+            //write the command
+            document.getElementById("command").value = "/summon armor_stand ~ ~ ~ {Small:1b,Marker:1b,Tags:[\"door"+num+"\"],Passengers:[";
+            document.getElementById("command").value = document.getElementById("command").value + "{id:\"minecraft:block_display\",block_state:{Name:\"minecraft:"+type+"_trapdoor\",Properties:{facing:\"east\",open:\"true\"}},interpolation_duration:0,interpolation_start:-1,transformation:[1f,0f,0f,-0.09375f,0f,1f,0f,0f,0f,0f,1f,-0.90625f,0f,0f,0f,1f],Tags:[\"door"+num+"\",\"door"+num+"up\"]}";
+            for (let i =1; i < size; i++){
+                document.getElementById("command").value = document.getElementById("command").value + ",{id:\"minecraft:block_display\",block_state:{Name:\"minecraft:"+type+"_trapdoor\",Properties:{facing:\"east\",open:\"true\"}},interpolation_duration:0,interpolation_start:-1,transformation:[1f,0f,0f,-0.09375f,0f,1f,0f,"+i+ "f,0f,0f,1f,-0.90625f,0f,0f,0f,1f],Tags:[\"door"+num+"\",\"door"+num+"up\"]}";
+            }
+            document.getElementById("command").value = document.getElementById("command").value + "],Rotation:[0F,-180F]}";
+            
+            
+            //copy the textbox
+            command.select();
+            document.execCommand("copy");
+        }
+
+
+	</script>
+</body>
+</html>
+`
